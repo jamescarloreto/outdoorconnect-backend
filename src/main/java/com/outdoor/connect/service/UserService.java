@@ -17,4 +17,8 @@ public interface UserService {
     public UserDetails findByUsername(String username);
 
     public Map<String, Object> create(Users userCreate);
+
+    public Users getParticipantCredential(Long id);
+
+    public void sendMailVerificationToUser(Users user);
 }

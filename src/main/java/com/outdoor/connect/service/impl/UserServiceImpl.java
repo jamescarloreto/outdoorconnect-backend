@@ -1,5 +1,6 @@
 package com.outdoor.connect.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +16,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.outdoor.connect.exception.UserNotFoundException;
 import com.outdoor.connect.model.Role;
 import com.outdoor.connect.model.Users;
 import com.outdoor.connect.repository.RoleRepository;
 import com.outdoor.connect.repository.UserRepository;
 import com.outdoor.connect.security.bean.UserBean;
 import com.outdoor.connect.service.UserService;
+import com.outdoor.connect.utils.MailUtils;
+import com.outdoor.connect.utils.StringUtils;
+import com.outdoor.connect.utils.UserUtils;
 
 /**
  * 
@@ -40,6 +45,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailUtils mailUtils;
 
     @Override
     public UserDetails findByUsername(String username) {
@@ -65,15 +73,15 @@ public class UserServiceImpl implements UserService {
                 return map;
             }
 
-            if (userRepository.existsById(userCreate.getId())) {
-                logger.error("create | userDto is exists");
+            // if (userRepository.existsById(userCreate.getId())) {
+            //     logger.error("create | userDto is exists");
 
-                map.put("status", HttpStatus.BAD_REQUEST);
+            //     map.put("status", HttpStatus.BAD_REQUEST);
 
-                return map;
-            }
+            //     return map;
+            // }
 
-            logger.error("create | username : " + userCreate.getUsername());
+            logger.info("create | username : " + userCreate.getUsername());
 
             List<Role> newRole = assignUserRole(userCreate.getRoles());
 
@@ -85,7 +93,8 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             Users newUser = userRepository.save(user);
-
+            
+            sendMailVerificationToUser(newUser);
             map.put("user", newUser);
             map.put("status", HttpStatus.CREATED);
 
@@ -112,5 +121,41 @@ public class UserServiceImpl implements UserService {
         });
 
         return newRole;
+    }
+
+    @Override
+    public Users getParticipantCredential(Long id) {
+        Optional<Users> user = null;
+        try {
+            Long principal = id == null ? UserUtils.GetPrincipalId() : id;
+    
+            logger.info("UserUtils | GetParticipantCredential | Principal: " + principal);
+    
+            user = Optional.ofNullable(userRepository.findById(principal).orElseThrow(() -> new UserNotFoundException()));
+            
+            logger.info("UserUtils | GetParticipantCredential | user: " + user);
+
+        } catch (Exception e) {
+            logger.error("UserUtils | GetParticipantCredential | error: " + e.getMessage());
+        }
+
+        return user.get();
+    }
+
+    @Override
+    public void sendMailVerificationToUser(Users user) {
+
+        user = user == null ? getParticipantCredential(UserUtils.GetPrincipalId()) : user;
+            
+        if (user == null) {
+            throw new NullPointerException("user is null");
+        } else {
+            user.setVerificationCode(StringUtils.Random6DigitCode());
+            user.setVerificationCodeExpirationDate(LocalDateTime.now().plusMinutes(10));
+
+            userRepository.save(user);
+        }
+
+        mailUtils.sendMailUserVerification(user);
     }
 }

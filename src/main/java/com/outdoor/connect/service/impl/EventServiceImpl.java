@@ -17,9 +17,8 @@ import com.outdoor.connect.model.EventType;
 import com.outdoor.connect.model.Participant;
 import com.outdoor.connect.repository.EventRepository;
 import com.outdoor.connect.repository.EventTypeRepository;
-import com.outdoor.connect.repository.ParticipantRepository;
 import com.outdoor.connect.service.EventService;
-import com.outdoor.connect.utils.UserUtils;
+import com.outdoor.connect.service.ParticipantService;
 ;
 
 /**
@@ -39,7 +38,7 @@ public class EventServiceImpl implements EventService {
     private EventTypeRepository eventTypeRepository;
 
     @Autowired
-    private ParticipantRepository participantRepository;
+    private ParticipantService participantService;
 
     @Override
     public Map<String, Object> create(Event event) {
@@ -89,7 +88,7 @@ public class EventServiceImpl implements EventService {
         List<Event> activeEvent;
 
         try {
-            Participant participant = UserUtils.getParticipant();
+            Participant participant = participantService.getParticipant();
             
             if (participant != null) {
 

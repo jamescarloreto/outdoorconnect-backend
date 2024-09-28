@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SoftwareengBackendApplication {
+public class OutdoorConnectBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SoftwareengBackendApplication.class, args);
+		SpringApplication.run(OutdoorConnectBackendApplication.class, args);
 	}
-
 }

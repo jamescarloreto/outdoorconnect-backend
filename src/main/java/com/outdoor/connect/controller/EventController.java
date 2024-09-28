@@ -33,8 +33,8 @@ public class EventController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody Event event) {
-
         logger.info("EventTypeController | eventType | START");
+        
         Map<String, Object> map = eventService.create(event);
 
         return new ResponseEntity<>(map.get("event"), (HttpStatusCode) map.get("status"));

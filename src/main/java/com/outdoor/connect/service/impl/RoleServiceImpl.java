@@ -21,7 +21,7 @@ import com.outdoor.connect.service.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 
     @Autowired
     private RoleRepository roleRepository;

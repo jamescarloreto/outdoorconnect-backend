@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,7 @@ public class Participant implements Serializable {
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
     private Long id;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
     private Users users;
 
     private String name;
