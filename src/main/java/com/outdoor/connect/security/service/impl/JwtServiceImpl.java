@@ -55,6 +55,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Boolean isTokenExpired(String token) {
+        logger.info("JwtServiceImpl | isTokenExpired | START");
         return extractExpiration(token).before(new Date());
     }
 
@@ -75,6 +76,7 @@ public class JwtServiceImpl implements JwtService {
 
     private String createToken(Map<String, Object> claims, String username) {
         logger.info("JwtServiceImpl | createToken | START");
+        logger.info("JwtServiceImpl | createToken | expirationTime: " + expirationTime);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
