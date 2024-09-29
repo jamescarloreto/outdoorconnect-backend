@@ -43,7 +43,9 @@ public class MailUtils {
 
                 Hope this message finds you well! 
                     
-                Verification code: """ + user.getVerificationCode() + " will expire in 10 mins " + """
+                Verification code: """ + user.getVerificationCode() + """ 
+                This will expire in 10 minutes.
+
                     
                 This is a email notification, please do not reply!!!
                 """;

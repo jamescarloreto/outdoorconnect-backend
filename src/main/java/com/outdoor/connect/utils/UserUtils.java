@@ -12,6 +12,8 @@ public abstract class UserUtils {
 
 
     public static String GetUsername() {
+        logger.info("UserUtils | GetUsername | START");
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    String username = authentication.getName();
 	    
@@ -19,7 +21,9 @@ public abstract class UserUtils {
 	}
 
     public static Long GetPrincipalId() {
-        UserBean userBean = null;
+        logger.info("UserUtils | GetPrincipalId | START");
+        
+        UserBean userBean;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!authentication.getPrincipal().equals("anonymousUser")) {

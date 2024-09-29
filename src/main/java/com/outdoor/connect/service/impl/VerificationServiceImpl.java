@@ -47,14 +47,14 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Map<String, Object> verifyCode(String verificationCode) {
         logger.info("VerificationServiceImpl | verifyCode | START");
-        
+
         Map<String, Object> map = new HashMap<>();
         try {
             Long principalId = UserUtils.GetPrincipalId();
 
             Boolean verified = userRepository.verifyCode(principalId, verificationCode, LocalDateTime.now());
 
-            Users user = userRepository.findById(principalId).orElseThrow(() -> new UserNotFoundException("No found user in id: " + principalId));
+            Users user = userRepository.findById(principalId).orElseThrow(() -> new UserNotFoundException("No found user using id: " + principalId));
 
             VerificationDto verificationDto = VerificationDto.builder()
                 .isVerified(verified == null ? false : verified)
