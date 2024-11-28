@@ -49,8 +49,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(r -> r
-                        .requestMatchers("/users/login", "/users/create", "/resources/**", "/event/all").permitAll()
-                        .requestMatchers("/ad/**").hasAnyRole("ADMIN","ADMIN02")
+                        .requestMatchers("/users/login", "/users/create", "/resources/**", "/event/all",
+                                "/swagger-ui/**", "/api-docs/**")
+                        .permitAll()
+                        .requestMatchers("/ad/**").hasAnyRole("ADMIN", "ADMIN02")
                         .anyRequest().authenticated())
                 .sessionManagement(t -> t
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -82,4 +84,3 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
-

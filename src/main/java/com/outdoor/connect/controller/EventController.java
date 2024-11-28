@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.outdoor.connect.model.Event;
 import com.outdoor.connect.service.EventService;
@@ -23,7 +24,7 @@ import com.outdoor.connect.service.EventService;
  * 
  */
 
-@Controller
+@RestController
 @RequestMapping("/event")
 public class EventController {
     private static final Logger logger = LoggerFactory.getLogger(EventController.class);
@@ -34,7 +35,7 @@ public class EventController {
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody Event event) {
         logger.info("EventTypeController | eventType | START");
-        
+
         Map<String, Object> map = eventService.create(event);
 
         return new ResponseEntity<>(map.get("event"), (HttpStatusCode) map.get("status"));
@@ -48,7 +49,5 @@ public class EventController {
 
         return new ResponseEntity<>(map.get("events"), (HttpStatusCode) map.get("status"));
     }
-
-    
 
 }

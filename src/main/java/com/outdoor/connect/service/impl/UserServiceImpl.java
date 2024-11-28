@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.outdoor.connect.dto.response.CreateUserResponseDto;
 import com.outdoor.connect.exception.UserNotFoundException;
 import com.outdoor.connect.model.Role;
 import com.outdoor.connect.model.Users;
@@ -36,13 +37,13 @@ import com.outdoor.connect.utils.UserUtils;
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-    
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> create(Users userCreate) {
+    public Map<String, Object> create(CreateUserResponseDto userCreate) {
         logger.info("UserServiceImpl | create | START");
 
         Map<String, Object> map = new HashMap<>();
@@ -73,14 +74,6 @@ public class UserServiceImpl implements UserService {
                 return map;
             }
 
-            // if (userRepository.existsById(userCreate.getId())) {
-            //     logger.error("create | userDto is exists");
-
-            //     map.put("status", HttpStatus.BAD_REQUEST);
-
-            //     return map;
-            // }
-
             logger.info("create | username : " + userCreate.getUsername());
 
             List<Role> newRole = assignUserRole(userCreate.getRoles());
@@ -93,7 +86,7 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             Users newUser = userRepository.save(user);
-            
+
             sendMailVerificationToUser(newUser);
             map.put("user", newUser);
             map.put("status", HttpStatus.CREATED);
@@ -128,11 +121,12 @@ public class UserServiceImpl implements UserService {
         Optional<Users> user = null;
         try {
             Long principal = id == null ? UserUtils.GetPrincipalId() : id;
-    
+
             logger.info("UserUtils | GetParticipantCredential | Principal: " + principal);
-    
-            user = Optional.ofNullable(userRepository.findById(principal).orElseThrow(() -> new UserNotFoundException()));
-            
+
+            user = Optional
+                    .ofNullable(userRepository.findById(principal).orElseThrow(() -> new UserNotFoundException()));
+
             logger.info("UserUtils | GetParticipantCredential | user: " + user);
 
         } catch (Exception e) {
@@ -146,7 +140,7 @@ public class UserServiceImpl implements UserService {
     public void sendMailVerificationToUser(Users user) {
 
         user = user == null ? getParticipantCredential(UserUtils.GetPrincipalId()) : user;
-            
+
         if (user == null) {
             throw new NullPointerException("user is null");
         } else {

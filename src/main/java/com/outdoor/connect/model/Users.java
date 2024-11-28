@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,9 +32,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="oc_users")
+@Table(name = "oc_users")
 public class Users implements Serializable {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,17 +46,13 @@ public class Users implements Serializable {
 
     private String emailAddress;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "oc_user_role", 
-			joinColumns = @JoinColumn(
-				name = "userId",
-				referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn (
-				name = "roleId",
-				referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "oc_user_role", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
     private List<Role> roles;
 
+    @JsonIgnore
     private String verificationCode;
 
+    @JsonIgnore
     private LocalDateTime verificationCodeExpirationDate;
 }

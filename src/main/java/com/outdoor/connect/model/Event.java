@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,7 +34,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="oc_event")
+@Table(name = "oc_event")
 @Entity
 public class Event {
 
@@ -48,8 +49,9 @@ public class Event {
      * Reference: https://forum.hibernate.org/viewtopic.php?f=6&t=974532
      */
 
+    @JsonIgnore
     @Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     // @Column(name = "a_id")
     private Long id;
 
@@ -72,19 +74,15 @@ public class Event {
     // @Column(name = "g_event_location", nullable=false)
     private String eventLocation;
 
-    @Column(scale = 2 /*, name = "h_event_fee", nullable=true*/ )
+    @Column(scale = 2 /* , name = "h_event_fee", nullable=true */ )
     private double eventFee;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "oc_event_participants", 
-			joinColumns = @JoinColumn(
-				name = "event_id",
-				referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn (
-				name = "participant_id",
-				referencedColumnName = "id"))
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "oc_event_participants", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
     private List<Participant> participants;
 
+    @JsonIgnore
     // @Column(name = "i_isActiveEvent", nullable=true)
     private Boolean isActiveEvent;
 }

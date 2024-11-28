@@ -3,6 +3,8 @@ package com.outdoor.connect.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,42 +33,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="oc_participant")
+@Table(name = "oc_participant")
 public class Participant implements Serializable {
 
-    @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY )
-    private Long id;
+	@JsonIgnore
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
-    private Users users;
+	private Users users;
 
-    private String name;
+	private String name;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "oc_participants_liked_activities", 
-			joinColumns = @JoinColumn(
-				name = "participantId",
-				referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn (
-				name = "event_type_id",
-				referencedColumnName = "id"))
-    private List<EventType> likedActivities;
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "oc_participants_liked_activities", joinColumns = @JoinColumn(name = "participantId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "event_type_id", referencedColumnName = "id"))
+	private List<EventType> likedActivities;
 
-    private String verifiedEmail;
+	private String verifiedEmail;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "oc_participants_event_attended", 
-			joinColumns = @JoinColumn(
-				name = "participantId",
-				referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn (
-				name = "event_id",
-				referencedColumnName = "id"))
-    private List<Event> eventAttended;
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "oc_participants_event_attended", joinColumns = @JoinColumn(name = "participantId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
+	private List<Event> eventAttended;
 
-    private int participantRating;
+	@JsonIgnore
+	private int participantRating;
 
-    private Boolean isCommentAllowed;
+	@JsonIgnore
+	private Boolean isCommentAllowed;
 
 }
