@@ -14,7 +14,7 @@ EXPOSE 8080
 
 # Copy the JAR file of your application into the container
 # Ensure you replace `target/your-application-0.0.1-SNAPSHOT.jar` with the correct JAR path
-COPY target/your-application-0.0.1-SNAPSHOT.jar app.jar
+COPY target/outdoorconnect-backend-0.0.1-SNAPSHOT.jar app.jar
 
 # Set environment variables for PostgreSQL (you'll likely override these in Render's dashboard)
 ENV SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-ct4dfp5ds78s73bi3ou0-a:5432/outdoorconnectdb
