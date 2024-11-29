@@ -15,12 +15,11 @@ EXPOSE 8080
 # Copy your project files into the container (assuming you have the mvnw script in your project)
 COPY . /app
 
-# Build the JAR using Maven
+# Build the JAR using Maven (inside the container)
 RUN ./mvnw clean package -DskipTests
 
 # Copy the JAR file of your application into the container
-# Ensure you replace `target/your-application-0.0.1-SNAPSHOT.jar` with the correct JAR path
-COPY target/outdoorconnect-backend-0.0.1-SNAPSHOT.jar app.jar
+RUN mv target/outdoorconnect-backend-0.0.1-SNAPSHOT.jar app.jar
 
 # Set environment variables for PostgreSQL (you'll likely override these in Render's dashboard)
 ENV SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/outdoorconnectdb
