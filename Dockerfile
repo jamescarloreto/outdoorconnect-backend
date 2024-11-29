@@ -15,10 +15,13 @@ EXPOSE 8080
 # Copy your project files into the container (assuming you have the mvnw script in your project)
 COPY . /app
 
+# Ensure mvnw script has execute permissions
+RUN chmod +x mvnw
+
 # Build the JAR using Maven (inside the container)
 RUN ./mvnw clean package -DskipTests
 
-# Copy the JAR file of your application into the container
+# Move the built JAR to the right location
 RUN mv target/outdoorconnect-backend-0.0.1-SNAPSHOT.jar app.jar
 
 # Set environment variables for PostgreSQL (you'll likely override these in Render's dashboard)
