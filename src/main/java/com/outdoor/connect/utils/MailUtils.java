@@ -15,7 +15,7 @@ public class MailUtils {
     private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
 
     @Autowired
-	private JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     public void sendMail(String toEmail, String subject, String message) {
         logger.info("MailComponent | sendMail | START");
@@ -26,7 +26,7 @@ public class MailUtils {
             mailMessage.setSubject(subject);
             mailMessage.setText(message);
             mailMessage.setFrom("otdrcnnct@gmail.com");
-            
+
             javaMailSender.send(mailMessage);
         } catch (MailSendException e) {
             logger.error("MailComponent | SendMail | error: " + e.getMessage());
@@ -39,21 +39,21 @@ public class MailUtils {
         try {
             logger.info("MailUtils | SendMailUserVerification | user: " + user.toString());
             String message = """
-                Greetings from Outdoor Connect~
+                    Greetings from Outdoor Connect~
 
-                Hope this message finds you well! 
-                    
-                Verification code: """ + user.getVerificationCode() + """ 
-                This will expire in 10 minutes.
+                    Hope this message finds you well!
 
-                    
-                This is a email notification, please do not reply!!!
-                """;
-    
+                    Verification code: """ + user.getVerificationCode() + """
+                    . This will expire in 10 minutes.
+
+
+                    This is a email notification, please do not reply!!!
+                    """;
+
             sendMail(user.getEmailAddress(), "Verification Code", message);
-    
+
             logger.info("MailUtils | SendMailUserVerification | END");
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             logger.error("MailUtils | SendMailUserVerification | error: " + ex.getMessage());
         }
     }

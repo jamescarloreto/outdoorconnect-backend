@@ -13,7 +13,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.outdoor.connect.dto.response.CreateUserResponseDto;
 import com.outdoor.connect.dto.response.LoginUserResponseDto;
-import com.outdoor.connect.model.Users;
 import com.outdoor.connect.security.service.JwtService;
 import com.outdoor.connect.service.UserService;
 
@@ -61,11 +59,11 @@ public class UserController {
 
         try {
             Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(userLogin.getUsername(),
+                    .authenticate(new UsernamePasswordAuthenticationToken(userLogin.getEmailAddress(),
                             userLogin.getPassword()));
 
             if (authentication.isAuthenticated()) {
-                token = jwtService.generateToken(userLogin.getUsername());
+                token = jwtService.generateToken(userLogin.getEmailAddress());
                 status = HttpStatus.OK;
             } else {
                 status = HttpStatus.UNAUTHORIZED;

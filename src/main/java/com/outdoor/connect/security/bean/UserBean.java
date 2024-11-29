@@ -18,8 +18,8 @@ import lombok.Data;
  * 
  */
 
- @Data
-public class UserBean  implements UserDetails {
+@Data
+public class UserBean implements UserDetails {
 
     private Long id;
     private String username;

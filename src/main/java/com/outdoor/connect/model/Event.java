@@ -68,6 +68,7 @@ public class Event {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private ZonedDateTime eventDate;
 
+    @JsonIgnore
     // @Column(name = "f_creation_date", nullable=false)
     private LocalDate creationDate;
 

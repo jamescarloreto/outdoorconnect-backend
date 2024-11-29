@@ -22,4 +22,9 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             SELECT TRUE FROM oc_users WHERE id = :principalId AND verification_code = :verificationCode AND verification_code_expiration_date >= :now
             """, nativeQuery = true)
     public Boolean verifyCode(Long principalId, String verificationCode, LocalDateTime now);
+
+    @Query(value = """
+            SELECT TRUE FROM oc_users WHERE email_address = :email
+            """, nativeQuery = true)
+    public Boolean emailExisting(String email);
 }

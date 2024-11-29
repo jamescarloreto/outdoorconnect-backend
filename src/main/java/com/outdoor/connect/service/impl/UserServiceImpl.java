@@ -67,8 +67,19 @@ public class UserServiceImpl implements UserService {
         try {
 
             if (userCreate == null) {
-                logger.error("create | userDto is null");
+                logger.error("create | userCreate is null");
 
+                map.put("status", HttpStatus.BAD_REQUEST);
+
+                return map;
+            }
+
+            Boolean emailExist = userRepository.emailExisting(userCreate.getEmailAddress());
+
+            if (emailExist != null) {
+                logger.error("create | " + userCreate.getEmailAddress() + " existing");
+
+                map.put("msg", "Email already existing.");
                 map.put("status", HttpStatus.BAD_REQUEST);
 
                 return map;
@@ -79,9 +90,9 @@ public class UserServiceImpl implements UserService {
             List<Role> newRole = assignUserRole(userCreate.getRoles());
 
             Users user = Users.builder()
-                    .username(userCreate.getUsername())
-                    .password(passwordEncoder.encode(userCreate.getPassword()))
                     .emailAddress(userCreate.getEmailAddress())
+                    .username(userCreate.getEmailAddress())
+                    .password(passwordEncoder.encode(userCreate.getPassword()))
                     .roles(newRole)
                     .build();
 
