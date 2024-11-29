@@ -12,6 +12,8 @@ LABEL description="Outdoor Connect"
 # Expose the port your application will run on (default for Spring Boot is 8080)
 EXPOSE 8080
 
+RUN ./mvnw clean package -DskipTests
+
 # Copy the JAR file of your application into the container
 # Ensure you replace `target/your-application-0.0.1-SNAPSHOT.jar` with the correct JAR path
 COPY target/outdoorconnect-backend-0.0.1-SNAPSHOT.jar app.jar
