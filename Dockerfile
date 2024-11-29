@@ -1,5 +1,5 @@
-# Use an official OpenJDK 21 runtime as a parent image
-FROM eclipse-temurin:21-jre-alpine
+# Use an official OpenJDK 21 runtime as a parent image (with JDK, not just JRE)
+FROM eclipse-temurin:21-jdk-alpine
 
 # Set a working directory in the container
 WORKDIR /app
