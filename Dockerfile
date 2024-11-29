@@ -25,9 +25,9 @@ RUN ./mvnw clean package -DskipTests
 RUN mv target/outdoorconnect-backend-0.0.1-SNAPSHOT.jar app.jar
 
 # Set environment variables for PostgreSQL (you'll likely override these in Render's dashboard)
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/outdoorconnectdb
-ENV SPRING_DATASOURCE_USERNAME=postgre
-ENV SPRING_DATASOURCE_PASSWORD=1234
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://admin:wNe4yTLie73bEk1wZZx45S3tceHKlfpg@dpg-ct4dfp5ds78s73bi3ou0-a/outdoorconnectdb
+ENV SPRING_DATASOURCE_USERNAME=admin
+ENV SPRING_DATASOURCE_PASSWORD=wNe4yTLie73bEk1wZZx45S3tceHKlfpg
 ENV JWT_KEY=B462CCCF881E5FB2D0508C6AE78124EF0A437E79FD1903777ECC051A989D7EDB
 ENV MAIL_PASS="jvne rjav orsg oyjt"
 
