@@ -12,6 +12,10 @@ LABEL description="Outdoor Connect"
 # Expose the port your application will run on (default for Spring Boot is 8080)
 EXPOSE 8080
 
+# Copy your project files into the container (assuming you have the mvnw script in your project)
+COPY . /app
+
+# Build the JAR using Maven
 RUN ./mvnw clean package -DskipTests
 
 # Copy the JAR file of your application into the container
