@@ -1,5 +1,6 @@
 package com.outdoor.connect.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,7 @@ import com.outdoor.connect.service.UserService;
  */
 
 @RestController
+@CrossOrigin(origins = "https://outdoorconnect.vercel.app")
 @RequestMapping("/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -56,6 +59,7 @@ public class UserController {
     public ResponseEntity<Object> login(@RequestBody LoginUserResponseDto userLogin) {
         String token = null;
         HttpStatusCode status = null;
+        Map<String, Object> map = new HashMap<>();
 
         try {
             Authentication authentication = authenticationManager
@@ -64,6 +68,9 @@ public class UserController {
 
             if (authentication.isAuthenticated()) {
                 token = jwtService.generateToken(userLogin.getEmailAddress());
+
+                map.put("success", "success");
+                map.put("token", token);
                 status = HttpStatus.OK;
             } else {
                 status = HttpStatus.UNAUTHORIZED;
@@ -77,6 +84,6 @@ public class UserController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<>(token, status);
+        return new ResponseEntity<>(map, status);
     }
 }
